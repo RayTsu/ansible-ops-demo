@@ -1,0 +1,5 @@
+- hosts: test
+  tags:
+    - authorized
+  roles:
+    - authorized

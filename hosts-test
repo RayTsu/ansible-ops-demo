@@ -1,0 +1,4 @@
+[test]
+192.168.11.51 ansible_ssh_user=root ansible_ssh_pass=123qwe!@\#
+192.168.11.52 ansible_ssh_user=root ansible_ssh_pass=123qwe!@\#
+192.168.11.53 ansible_ssh_user=root ansible_ssh_pass=123qwe!@\#

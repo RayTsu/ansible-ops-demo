@@ -1,0 +1,18 @@
+# 安装jdk8
+
+- name: transfer jdk-8u151-linux-x64.tar.gz to dest client's /usr/local directory
+  copy: src=/app/ansible/files/jdk-8u151-linux-x64.tar.gz dest=/usr/local
+        owner=root mode=0644
+
+- name: extract jdk-8u151-linux-x64.tar.gz
+  shell: tar -zxf /usr/local/jdk-8u151-linux-x64.tar.gz -C /usr/local
+  args:
+    creates: /usr/local/jdk1.8
+
+- name: mv name
+  shell: mv /usr/local/jdk1.8.0_151 /usr/local/jdk1.8
+  args:
+    creates: /usr/local/jdk1.8
+
+- name: config jdk8 path
+  shell: echo "export JAVA_HOME=/usr/local/jdk1.8" >> /etc/profile && echo "export PATH=\$JAVA_HOME/bin:\$PATH" >> /etc/profile

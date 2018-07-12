@@ -1,0 +1,18 @@
+# 安装maven
+
+- name: transfer apache-maven-3.5.3-bin.zip to dest client's /usr/local directory
+  copy: src=/app/ansible/files/apache-maven-3.5.3-bin.zip dest=/usr/local
+        owner=root mode=0644
+
+- name: extract apache-maven-3.5.3-bin.zip
+  shell: unzip /usr/local/apache-maven-3.5.3-bin.zip -d /usr/local
+  args:
+    creates: /usr/local/maven
+
+- name: mv name
+  shell: mv /usr/local/apache-maven-3.5.3 /usr/local/maven
+  args:
+    creates: /usr/local/maven
+
+- name: config maven path
+  shell: echo "export M2_HOME=/usr/local/maven" >> /etc/profile && echo "export PATH=\$M2_HOME/bin:\$PATH" >> /etc/profile

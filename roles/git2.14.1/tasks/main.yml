@@ -1,0 +1,24 @@
+# 安装2.14.1版本的git
+
+- name: transfer git-2.14.1.tar.gz to dest client's /usr/local directory
+  copy: src=/app/ansible/files/git-2.14.1.tar.gz dest=/usr/local
+        owner=root mode=0644
+
+- name: extract git-2.14.1.tar.gz
+  shell: tar -zxf /usr/local/git-2.14.1.tar.gz -C /usr/local
+
+- name: install git-2.14.1 dependencies
+  shell: |
+          yum groupinstall "Development tools" -y
+          yum install gettext-devel openssl-devel perl-CPAN perl-devel zlib-devel curl-devel -y
+  args:
+    creates: /usr/local/git-2.14.1
+
+- name: install git-2.14.1
+  shell: |
+          cd /usr/local/git-2.14.1
+          ./configure --prefix=/usr/local
+          make && make install
+
+- name: store git password
+  shell: echo -e "[credential]\n  helper = store"> /root/.gitconfig
