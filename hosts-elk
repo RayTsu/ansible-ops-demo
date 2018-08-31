@@ -1,0 +1,10 @@
+[elasticsearch]
+192.168.11.73
+[kibana]
+192.168.11.73
+[filebeat]
+192.168.10.69
+[all:vars]
+kibana_server="192.168.11.73"
+elasticsearch_server="192.168.11.73"
+log_path="/app/logs/eloan-portal-performance/eloan.log"

@@ -13,3 +13,6 @@
   shell: mv /usr/local/jdk1.7.0_80 /usr/local/jdk1.7
   args:
     creates: /usr/local/jdk1.7
+
+- name: chown jdk
+  shell: chown root.root /usr/local/jdk1.7/ -R

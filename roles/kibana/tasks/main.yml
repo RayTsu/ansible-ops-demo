@@ -1,0 +1,48 @@
+# 安装kibana作为日志展示UI
+
+- name: create /app directory if not exists
+  file: name=/app state=directory
+
+- name: transfer kibana-6.4.0-x86_64.rpm to dest server
+  copy: src=/test/ELK/kibana-6.4.0-x86_64.rpm dest=/app
+        owner=root mode=0644
+
+- name: install kibana
+  shell: |
+          cd /app
+          rpm -ivh kibana-6.4.0-x86_64.rpm
+
+- name: config kibana.yml 1
+  lineinfile:
+    path: /etc/kibana/kibana.yml
+    regexp: '^#server.port'
+    line: 'server.port: 5601'
+
+- name: config kibana.yml 2
+  lineinfile:
+    path: /etc/kibana/kibana.yml
+    regexp: '^#server.host'
+    line: 'server.host: "{{kibana_server}}"'
+
+- name: config kibana.yml 3
+  lineinfile:
+    path: /etc/kibana/kibana.yml
+    regexp: '^#elasticsearch.url'
+    line: 'elasticsearch.url: "http://{{elasticsearch_server}}:9200"'
+
+- name: config kibana.yml 4
+  lineinfile:
+    path: /etc/kibana/kibana.yml
+    regexp: '^#logging.dest'
+    line: 'logging.dest: /var/log/kibana.log'
+
+- name: create kibana log file and grant permission
+  shell: |
+          touch /var/log/kibana.log
+          chmod 777 /var/log/kibana.log
+
+- name: enable service auto start when system boot
+  shell: systemctl enable kibana.service
+
+- name: start service
+  shell: systemctl start kibana.service

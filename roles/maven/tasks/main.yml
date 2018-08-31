@@ -14,5 +14,9 @@
   args:
     creates: /usr/local/maven
 
+- name: copy settings.xml to dest server
+  template: src=settings.xml dest=/usr/local/maven/conf
+            mode=0644 owner=root
+
 - name: config maven path
   shell: echo "export M2_HOME=/usr/local/maven" >> /etc/profile && echo "export PATH=\$M2_HOME/bin:\$PATH" >> /etc/profile

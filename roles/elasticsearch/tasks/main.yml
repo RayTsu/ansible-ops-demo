@@ -1,0 +1,59 @@
+# 安装elasticsearch作为搜索引擎
+
+- name: create /app directory if not exists
+  file: name=/app state=directory
+
+- name: create elasticsearch user
+  user: name=elasticsearch state=present
+
+- name: transfer elasticsearch-6.4.0.rpm to dest server
+  copy: src=/test/ELK/elasticsearch-6.4.0.rpm dest=/app
+        owner=elasticsearch group=elasticsearch mode=0644
+
+- name: install elasticsearch
+  shell: |
+          cd /app
+          rpm -ivh elasticsearch-6.4.0.rpm
+
+- name: create elasticsearch directory for data and log
+  file: name=/app/{{item}} state=directory
+        owner=elasticsearch group=elasticsearch
+  with_items:
+  - "es/data"
+  - "es/log"
+
+- name: config elasticsearch.yml 1
+  lineinfile:
+    path: /etc/elasticsearch/elasticsearch.yml
+    regexp: '^path.data'
+    line: 'path.data: /app/es/data'
+
+- name: config elasticsearch.yml 2
+  lineinfile:
+    path: /etc/elasticsearch/elasticsearch.yml
+    regexp: '^path.logs'
+    line: 'path.logs: /app/es/logs'
+
+- name: config elasticsearch.yml 3
+  lineinfile:
+    path: /etc/elasticsearch/elasticsearch.yml
+    regexp: '^#network.host'
+    line: 'network.host: 0.0.0.0'
+
+- name: config jvm.options 1
+  lineinfile:
+    path: /etc/elasticsearch/jvm.options
+    regexp: '^-Xms'
+    line: '-Xms4g'
+
+- name: config jvm.options 2
+  lineinfile:
+    path: /etc/elasticsearch/jvm.options
+    regexp: '^-Xmx'
+    line: '-Xmx4g'
+
+- name: enable service auto start when system boot
+  shell: systemctl enable elasticsearch.service
+
+- name: start service
+  shell: systemctl start elasticsearch.service

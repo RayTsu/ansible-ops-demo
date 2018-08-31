@@ -1,0 +1,26 @@
+- hosts:
+  - elasticsearch
+  - kibana
+  - filebeat
+  tags:
+  - all_need
+  roles:
+  - jdk8
+
+- hosts: elasticsearch
+  tags:
+    - install-elasticsearch
+  roles:
+    - elasticsearch
+
+- hosts: kibana
+  tags:
+    - install-kibana
+  roles:
+    - kibana
+
+- hosts: filebeat
+  tags:
+    - install-filebeat
+  roles:
+    - filebeat

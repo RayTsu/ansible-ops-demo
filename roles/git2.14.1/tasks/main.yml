@@ -9,10 +9,9 @@
 
 - name: install git-2.14.1 dependencies
   shell: |
+          yum clean all
           yum groupinstall "Development tools" -y
           yum install gettext-devel openssl-devel perl-CPAN perl-devel zlib-devel curl-devel -y
-  args:
-    creates: /usr/local/git-2.14.1
 
 - name: install git-2.14.1
   shell: |

@@ -1,0 +1,37 @@
+# 安装filebeat搜集服务器日志
+
+- name: create /app directory if not exists
+  file: name=/app state=directory
+
+- name: transfer filebeat-6.4.0-x86_64.rpm to dest server
+  copy: src=/test/ELK/filebeat-6.4.0-x86_64.rpm dest=/app
+        owner=root mode=0644
+
+- name: install filebeat
+  shell: |
+          cd /app
+          rpm -ivh filebeat-6.4.0-x86_64.rpm
+
+- name: config filebeat.yml 1
+  lineinfile:
+    path: /etc/filebeat/filebeat.yml
+    regexp: '^  enabled'
+    line: '# enabled: false'
+
+- name: config filebeat.yml 2
+  lineinfile:
+    path: /etc/filebeat/filebeat.yml
+    regexp: '^    -'
+    line: '    - {{log_path}}'
+
+- name: config filebeat.yml 3
+  lineinfile:
+    path: /etc/filebeat/filebeat.yml
+    regexp: '^  hosts'
+    line: '  hosts: ["{{elasticsearch_server}}:9200"]'
+
+- name: enable service auto start when system boot
+  shell: systemctl enable filebeat.service
+
+- name: start service
+  shell: systemctl start filebeat.service
