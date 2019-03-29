@@ -16,6 +16,7 @@
 - name: install git-2.14.1
   shell: |
           cd /usr/local/git-2.14.1
+          make configure
           ./configure --prefix=/usr/local
           make && make install
 
