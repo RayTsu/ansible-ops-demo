@@ -3,3 +3,9 @@
     - authorized
   roles:
     - authorized
+
+- hosts: haha
+  tags:
+    - haha
+  roles:
+    - haha
