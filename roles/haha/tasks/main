@@ -1,0 +1,8 @@
+
+# show one show 
+
+- name: show one show 
+  shell: ls -al
+
+- name: debug test
+  debug: msg="{{ inventory_hostname }} you know"
